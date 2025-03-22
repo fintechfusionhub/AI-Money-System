@@ -7,9 +7,9 @@ jobs:
   setup_accounts:
     runs-on: ubuntu-latest
     steps:
-      - name: Create Email Accounts (Auto)
-        run: |
-          curl -X POST "https://email-api.com/create" -d "count=5&type=protonmail"
+       - name: Create Email Accounts (Using Temp Mail)
+      run: |
+        curl -s "https://www.1secmail.com/api/v1/?action=genRandomMailbox" | jq '.[]'
 
       - name: Register Payment Accounts (Crypto & Payoneer)
         run: |
