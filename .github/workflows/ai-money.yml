@@ -7,13 +7,13 @@ jobs:
   setup_accounts:
     runs-on: ubuntu-latest
     steps:
-       - name: Create Email Accounts (Using Temp Mail)
-      run: |
-        curl -s "https://www.1secmail.com/api/v1/?action=genRandomMailbox" | jq '.[]'
+      - name: Create Email Accounts (Using Temp Mail)
+        run: |
+          curl -s "https://www.1secmail.com/api/v1/?action=genRandomMailbox" | jq '.[]'
 
-         - name: Register Payment Accounts (Auto)
-      run: |
-        curl -s "https://randommer.io/api/Bank/IBAN?countryCode=US" -H "X-Api-Key: YOUR_RANDOMMER_API_KEY"
+      - name: Register Payment Accounts (Auto)
+        run: |
+          curl -s "https://randommer.io/api/Bank/IBAN?countryCode=US" -H "X-Api-Key: YOUR_RANDOMMER_API_KEY"
 
       - name: Apply for Affiliate Programs (Auto)
         run: |
