@@ -7,38 +7,55 @@ jobs:
   setup_accounts:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Install Dependencies (jq, curl)
+        run: sudo apt update && sudo apt install -y jq curl
+
       - name: Create Email Accounts (Using Temp Mail)
         run: |
-          curl -s "https://www.1secmail.com/api/v1/?action=genRandomMailbox" | jq '.[]'
+          EMAIL=$(curl -s "https://www.1secmail.com/api/v1/?action=genRandomMailbox" | jq -r '.[]')
+          echo "Generated Email: $EMAIL"
 
       - name: Register Payment Accounts (Auto)
+        env:
+          API_KEY: "YOUR_RANDOMMER_API_KEY"
         run: |
-          curl -s "https://randommer.io/api/Bank/IBAN?countryCode=US" -H "X-Api-Key: YOUR_RANDOMMER_API_KEY"
+          IBAN=$(curl -s "https://randommer.io/api/Bank/IBAN?countryCode=US" -H "X-Api-Key: $API_KEY")
+          echo "Generated IBAN: $IBAN"
 
       - name: Apply for Affiliate Programs (Auto)
         run: |
-          curl -X POST "https://affiliate-api.com/apply" -d "auto_apply=true"
+          RESPONSE=$(curl -X POST "https://affiliate-api.com/apply" -d "auto_apply=true")
+          echo "Affiliate Response: $RESPONSE"
 
       - name: Generate Blog Content (AI + Auto Review)
         run: |
-          curl -X POST "https://ai-content-api.com/generate" -d "topic=finance,tech,crypto&auto_review=true"
+          CONTENT=$(curl -X POST "https://ai-content-api.com/generate" -d "topic=finance,tech,crypto&auto_review=true")
+          echo "Generated Content: $CONTENT"
 
       - name: Publish to Website (Smart Timing)
         run: |
-          curl -X POST "https://systeme.io/api/publish" -d "content_id=new_post&schedule=random"
+          PUBLISH_RESPONSE=$(curl -X POST "https://systeme.io/api/publish" -d "content_id=new_post&schedule=random")
+          echo "Publish Response: $PUBLISH_RESPONSE"
 
       - name: Upload to YouTube (Smart Timing)
         run: |
-          curl -X POST "https://youtube-api.com/upload" -d "video_id=new_video&schedule=random"
+          UPLOAD_RESPONSE=$(curl -X POST "https://youtube-api.com/upload" -d "video_id=new_video&schedule=random")
+          echo "Upload Response: $UPLOAD_RESPONSE"
 
       - name: Monitor Revenue Across Multiple Accounts
         run: |
-          curl -X GET "https://multi-payout-api.com/revenue"
+          REVENUE_DATA=$(curl -X GET "https://multi-payout-api.com/revenue")
+          echo "Revenue Data: $REVENUE_DATA"
 
       - name: AI-Managed Payments & Withdrawals
         run: |
-          curl -X POST "https://payment-api.com/withdraw" -d "amount=auto_safe_limit"
+          PAYMENT_RESPONSE=$(curl -X POST "https://payment-api.com/withdraw" -d "amount=auto_safe_limit")
+          echo "Payment Response: $PAYMENT_RESPONSE"
 
       - name: Auto-Replace Banned Domains
         run: |
-          curl -X POST "https://domain-monitor-api.com/replace" -d "auto_create_new_domain=true"
+          DOMAIN_RESPONSE=$(curl -X POST "https://domain-monitor-api.com/replace" -d "auto_create_new_domain=true")
+          echo "Domain Replace Response: $DOMAIN_RESPONSE"
