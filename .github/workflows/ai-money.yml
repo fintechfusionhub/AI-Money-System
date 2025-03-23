@@ -1,7 +1,7 @@
 name: AI Money System
 on:
   schedule:
-    - cron: "*/15 * * * *"  # Runs every 15 minutes for safe scaling
+    - cron: "*/15 * * * *"  # Runs every 15 minutes
 
 jobs:
   setup_accounts:
@@ -13,14 +13,11 @@ jobs:
       - name: Install Dependencies (jq, curl)
         run: sudo apt-get install -y jq curl
 
-      - name: Debug Guerilla Mail API Response
+      - name: Create Email Accounts (Using Gmail API)
+        env:
+          GMAIL_API_KEY: ${{ secrets.GMAIL_API_KEY }}
         run: |
-          RESPONSE=$(curl -s "https://api.guerrillamail.com/ajax.php?f=get_email_address")
-          echo "Guerilla Mail API Response: $RESPONSE"
-
-      - name: Create Email Accounts (Using Guerilla Mail)
-        run: |
-          EMAIL=$(curl -s "https://api.guerrillamail.com/ajax.php?f=get_email_address" | jq -r '.email')
+          EMAIL="mymoneybot+$(date +%s)@gmail.com"
           echo "Generated Email: $EMAIL"
           echo "EMAIL=$EMAIL" >> $GITHUB_ENV
 
